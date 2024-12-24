@@ -38,15 +38,15 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
   Future<void> endTimeEvent(EndTimeEvent event, Emitter<HistoryState> emit) async {
     emit(state.copyWith(endTime: event.endTime));
-    filterData(emit);
+    filterData(emit: emit, endTime: event.endTime);
   }
 
   Future<void> startTimeEvent(StartTimeEvent event, Emitter<HistoryState> emit) async {
     emit(state.copyWith(startTime: event.startTime));
-    filterData(emit);
+    filterData(emit: emit, startTime: event.startTime);
   }
 
-  Future<void> filterData(Emitter<HistoryState> emit) async {
+  Future<void> filterData({required Emitter<HistoryState> emit, DateTime? startTime, DateTime? endTime}) async {
     final dateFormat = DateFormat("HH:mm, d MMMM, yyyy"); // Adjusted to match the date format
     final filteredList = state.contracts!.where((contract) {
       try {
@@ -62,6 +62,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     }).toList();
 
     log("Filtered list count: ${filteredList.length}");
-    emit(state.copyWith(contracts: filteredList));
+    emit(state.copyWith(contracts: filteredList, startTime: startTime, endTime: endTime));
   }
 }

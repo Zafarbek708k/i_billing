@@ -105,6 +105,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              const SizedBox(height: 20),
                               SvgPicture.asset("assets/icons/empty_history.svg"),
                               const SizedBox(height: 10),
                               const Text("No history for this period", style: TextStyle(color: Color(0xffE7E7E7)))

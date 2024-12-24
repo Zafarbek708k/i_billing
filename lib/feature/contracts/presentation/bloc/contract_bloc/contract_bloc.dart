@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:i_billing/feature/contracts/data/model/full_contract_model.dart';
@@ -68,5 +70,18 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
 
   void endDateSelect(EndDateSelectEvent event, Emitter<ContractState> emit) {
     emit(state.copyWith(endDate: event.endTime));
+  }
+
+
+  void search(String text){
+    final list = state.contractList;
+
+    final filteredList = list!.where((contract) {
+      return contract.author
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase());
+    }).toList();
+    emit(state.copyWith(status: HomeStatus.loaded, filterList: filteredList));
   }
 }
