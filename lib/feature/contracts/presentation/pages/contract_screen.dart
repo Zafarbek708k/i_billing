@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:i_billing/core/common/app_colors.dart';
-import 'package:i_billing/core/common/app_route_name.dart';
 import 'package:i_billing/feature/contracts/presentation/bloc/contract_bloc/contract_bloc.dart';
+import 'package:i_billing/feature/contracts/presentation/pages/filter.dart';
+import 'package:i_billing/feature/contracts/presentation/pages/search.dart';
 import 'package:i_billing/feature/contracts/presentation/widgets/pagination.dart';
+
+import '../../../new/presentation/bloc/add_new_contract_bloc.dart';
 
 class ContractScreen extends StatefulWidget {
   const ContractScreen({super.key});
@@ -24,16 +29,25 @@ class _ContractScreenState extends State<ContractScreen> {
         leading: const Padding(padding: EdgeInsets.only(left: 18.0), child: CircleAvatar(radius: 10)),
         title: const Text("Contracts", style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton(onPressed: () => Navigator.pushNamed(context, AppRouteName.filter), icon: SvgPicture.asset("assets/icons/Filter.svg")),
+          IconButton(
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Filter())),
+            icon: SvgPicture.asset("assets/icons/Filter.svg"),
+          ),
           const Text("|", style: TextStyle(color: Colors.white, fontSize: 20)),
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, AppRouteName.search),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Search()));
+            },
             icon: const Icon(Icons.search, color: AppColors.white),
           ),
         ],
       ),
       body: BlocBuilder<ContractBloc, ContractState>(
         builder: (context, state) {
+          dynamic a = context.select((AddNewContractBloc bloc) => bloc.state).status;
+          if(a == NewContractStatus.loaded){
+           context.read<ContractBloc>().add(GetAllContractEvent());
+          }
           if (state.status == HomeStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }

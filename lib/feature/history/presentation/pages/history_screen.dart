@@ -33,11 +33,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         backgroundColor: AppColors.darkest,
         leading: const Padding(padding: EdgeInsets.only(left: 18.0), child: CircleAvatar(radius: 10)),
         title: const Text("History", style: TextStyle(color: Colors.white)),
-        actions: [
-          IconButton(onPressed: () => Navigator.pushNamed(context, AppRouteName.filter), icon: SvgPicture.asset("assets/icons/Filter.svg")),
-          const Text("|", style: TextStyle(color: Colors.white, fontSize: 20)),
-          IconButton(onPressed: () => Navigator.pushNamed(context, AppRouteName.search), icon: const Icon(Icons.search, color: AppColors.white)),
-        ],
       ),
       body: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {

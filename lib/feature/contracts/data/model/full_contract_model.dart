@@ -45,13 +45,14 @@ class FullContractModel {
   };
 }
 
+
 class Contract {
   final String? author;
   final String? status;
   final String? amount;
   final String? lastInvoice;
   final String? numberOfInvoice;
-  final String? addressOrganization;
+  final String? addresOrganization;
   final String? innOrganization;
   final String? dateTime;
 
@@ -61,7 +62,7 @@ class Contract {
     this.amount,
     this.lastInvoice,
     this.numberOfInvoice,
-    this.addressOrganization,
+    this.addresOrganization,
     this.innOrganization,
     this.dateTime,
   });
@@ -72,7 +73,7 @@ class Contract {
     String? amount,
     String? lastInvoice,
     String? numberOfInvoice,
-    String? addressOrganization,
+    String? addresOrganization,
     String? innOrganization,
     String? dateTime,
   }) =>
@@ -82,7 +83,7 @@ class Contract {
         amount: amount ?? this.amount,
         lastInvoice: lastInvoice ?? this.lastInvoice,
         numberOfInvoice: numberOfInvoice ?? this.numberOfInvoice,
-        addressOrganization: addressOrganization ?? this.addressOrganization,
+        addresOrganization: addresOrganization ?? this.addresOrganization,
         innOrganization: innOrganization ?? this.innOrganization,
         dateTime: dateTime ?? this.dateTime,
       );
@@ -93,7 +94,7 @@ class Contract {
     amount: json["amount"],
     lastInvoice: json["lastInvoice"],
     numberOfInvoice: json["numberOfInvoice"],
-    addressOrganization: json["addressOrganization"],
+    addresOrganization: json["addresOrganization"],
     innOrganization: json["INNOrganization"],
     dateTime: json["dateTime"],
   );
@@ -104,8 +105,9 @@ class Contract {
     "amount": amount,
     "lastInvoice": lastInvoice,
     "numberOfInvoice": numberOfInvoice,
-    "addressOrganization": addressOrganization,
+    "addresOrganization": addresOrganization,
     "INNOrganization": innOrganization,
     "dateTime": dateTime,
   };
 }
+

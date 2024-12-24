@@ -23,7 +23,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   Future<void> getAllContract(GetAllContractEvent event, Emitter<HistoryState> emit) async {
     emit(state.copyWith(status: HistoryStatus.loading));
     String? allData = await NetworkService.get(ApiConst.apiBilling, ApiConst.emptyParam());
-    if(allData != null){
+    if (allData != null) {
       final list = <Contract>[];
       final model = fullContractModelFromJson(allData);
       for (var o in model) {
@@ -31,7 +31,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       }
       log("\n\n\n\nhistory contracts length = ${list.length}");
       emit(state.copyWith(status: HistoryStatus.loaded, fullContractModel: model, contracts: list));
-    }else{
+    } else {
       emit(state.copyWith(status: HistoryStatus.error, errorMsg: "Something went wrong to Load data"));
     }
   }

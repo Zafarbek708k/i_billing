@@ -13,3 +13,9 @@ class EndDateSelectEvent extends ContractEvent{
   final DateTime endTime;
   EndDateSelectEvent({required this.endTime});
 }
+
+class FilterEvent extends ContractEvent{
+  final bool paid, process, rejectIq, rejectPay;
+  final DateTime start, end;
+  FilterEvent({required this.paid, required this.process, required this.rejectIq, required this.rejectPay, required this.end, required this.start});
+}

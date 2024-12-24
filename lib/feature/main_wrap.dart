@@ -1,9 +1,13 @@
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:i_billing/core/common/app_colors.dart';
+import 'package:i_billing/core/common/app_router.dart';
 import 'package:i_billing/feature/contracts/presentation/pages/contract_screen.dart';
+import 'package:i_billing/feature/contracts/presentation/pages/filter.dart';
+import 'package:i_billing/feature/contracts/presentation/pages/search.dart';
 import 'package:i_billing/feature/history/presentation/pages/history_screen.dart';
 import 'package:i_billing/feature/new/presentation/pages/new_contract_screen.dart';
 import 'package:i_billing/feature/profile/presentation/pages/profile_screen.dart';
@@ -21,10 +25,43 @@ class _MainWrapState extends State<MainWrap> {
 
   final List<Widget> _pages = [
     const ContractScreen(),
-    const HistoryScreen(),
-    const NewContractScreen(),
-    const SavedScreen(),
-    const ProfileScreen(),
+    // Navigator(
+    //   onGenerateRoute: (routeSettings) => MaterialPageRoute(
+    //     builder: (context) => const ContractScreen(),
+    //   ),
+    // ),
+    Navigator(
+      // key: historyKey,
+      onGenerateRoute: (routeSettings) => MaterialPageRoute(
+        builder: (context) {
+          return const HistoryScreen();
+        },
+      ),
+    ),
+    Navigator(
+      // key: createKey,
+      onGenerateRoute: (routeSettings) => MaterialPageRoute(
+        builder: (context) {
+          return const NewContractScreen();
+        },
+      ),
+    ),
+    Navigator(
+      // key: saveKey,
+      onGenerateRoute: (routeSettings) => MaterialPageRoute(
+        builder: (context) {
+          return const SavedScreen();
+        },
+      ),
+    ),
+    Navigator(
+      // key: profileKey,
+      onGenerateRoute: (routeSettings) => MaterialPageRoute(
+        builder: (context) {
+          return const ProfileScreen();
+        },
+      ),
+    ),
   ];
 
   void _onTabTapped(int index) {

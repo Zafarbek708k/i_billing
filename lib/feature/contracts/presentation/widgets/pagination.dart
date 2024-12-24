@@ -1,5 +1,7 @@
 
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:i_billing/feature/contracts/presentation/pages/contract_detail.dart';
 import 'package:i_billing/feature/contracts/presentation/widgets/calendar.dart';
@@ -86,6 +88,7 @@ class PaginationExampleState extends State<PaginationExample> {
               itemCount: displayedItems.length + (isLoading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index < displayedItems.length) {
+                  log("\n\n to json${displayedItems[0].toJson()}\n\n");
                   return ContractWidget(
                     model: displayedItems[index],
                     onTap: () {

@@ -10,8 +10,11 @@ import 'package:i_billing/feature/profile/presentation/pages/profile_screen.dart
 import 'package:i_billing/feature/saved/presentation/pages/saved_screen.dart';
 import 'package:i_billing/feature/splash/presentation/pages/splash_screen.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+final GlobalKey<NavigatorState> contractKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> historyKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> createKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> saveKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> profileKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   AppRouter._();
@@ -34,13 +37,22 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => const MainWrap(),
         );
+      case AppRouteName.search:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const Search();
+          },
+        );
+      case AppRouteName.filter:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const Filter();
+          },
+        );
       default:
         return MaterialPageRoute(
-          builder: (context) => const SplashScreen(),
+          builder: (context) => const MainWrap(),
         );
     }
   }
-
 }
-
-

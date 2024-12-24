@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_billing/core/common/app_colors.dart';
 import 'package:i_billing/core/common/app_route_name.dart';
-import 'package:i_billing/core/setting/localization_cubit.dart';
-import 'package:i_billing/core/widgets/main_button.dart';
+import 'package:i_billing/feature/main_wrap.dart';
 import 'package:i_billing/feature/splash/presentation/widgets/custom_fade_animation.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void goNextPage() {
     Timer(const Duration(seconds: 3), () {
       log("message");
-      Navigator.pushReplacementNamed(context, AppRouteName.mainWrap);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const MainWrap()));
     });
   }
 

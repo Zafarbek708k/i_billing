@@ -75,7 +75,7 @@ class CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                 final day = monthDays[index];
                 return GestureDetector(
                   onTap: () {
-                    print('Selected date: ${day['date']}');
+                    log('Selected date: ${day['date']}');
                   },
                   child: Container(
                     width: 60,

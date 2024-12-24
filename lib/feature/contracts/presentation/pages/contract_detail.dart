@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:i_billing/core/common/app_colors.dart';
+import 'package:i_billing/core/extension/context_extension.dart';
 import 'package:i_billing/core/widgets/main_button.dart';
 import 'package:i_billing/feature/contracts/presentation/widgets/contract_widget.dart';
 
@@ -87,57 +88,58 @@ class _ContractDetailState extends State<ContractDetail> {
                   children: [
                     Row(
                       children: [
-                        const Text("Fisher's full name: ", style: TextStyle(color: Color(0xffE7E7E7))),
+                        Text("Fisher's full name: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
                         Text("${widget.model.author}", style: const TextStyle(color: Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text("Status of the contract: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text(paymentStatus, style: const TextStyle(color: Color(0xff999999))),
+                        Text("Status of the contract: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Text(paymentStatus, style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text("Amount: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.amount}", style: const TextStyle(color: Color(0xff999999))),
+                        Text("Amount: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Text("${widget.model.amount}",style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text("Last Invoice: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.lastInvoice}", style: const TextStyle(color: Color(0xff999999))),
+                        Text("Last Invoice: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Text("${widget.model.lastInvoice}",style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text("Number of invoices: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.numberOfInvoice}", style: const TextStyle(color: Color(0xff999999))),
+                        Text("Number of invoices: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Text("${widget.model.numberOfInvoice}",style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Wrap(
+                      children: [
+                        Text("Address of the organization: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Expanded(child: Text("${widget.model.addresOrganization}",style: context.textTheme.bodyMedium?.copyWith(color: const Color
+                          (0xff999999)))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text("Address of the organization: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.addressOrganization}", style: const TextStyle(color: Color(0xff999999))),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        const Text("ITN/IEC of the organization: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.innOrganization}", style: const TextStyle(color: Color(0xff999999))),
+                        Text("ITN/IEC of the organization: ", style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xffE7E7E7))),
+                        Text("${widget.model.innOrganization}",style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
                         const Text("Created at: ", style: TextStyle(color: Color(0xffE7E7E7))),
-                        Text("${widget.model.dateTime}", style: const TextStyle(color: Color(0xff999999))),
+                        Text("${widget.model.dateTime}",style: context.textTheme.bodyMedium?.copyWith(color: const Color(0xff999999))),
                       ],
                     ),
                     const SizedBox(height: 5),
