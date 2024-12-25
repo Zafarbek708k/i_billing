@@ -19,3 +19,19 @@ class FilterEvent extends ContractEvent{
   final DateTime start, end;
   FilterEvent({required this.paid, required this.process, required this.rejectIq, required this.rejectPay, required this.end, required this.start});
 }
+
+class AuthorContractsEvent extends ContractEvent{
+  final String authorName;
+  AuthorContractsEvent({required this.authorName});
+}
+
+class SaveContractEvent extends ContractEvent{
+  final String contractId;
+  final String authorName;
+  SaveContractEvent({required this.contractId, required this.authorName});
+}
+
+class DeleteContractEvent extends ContractEvent{
+  final String contractId, authorName;
+  DeleteContractEvent({required this.contractId, required this.authorName});
+}

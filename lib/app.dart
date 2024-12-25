@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +11,8 @@ import 'package:i_billing/feature/history/presentation/bloc/history_bloc.dart';
 import 'package:i_billing/feature/new/presentation/bloc/add_new_contract_bloc.dart';
 import 'package:i_billing/feature/profile/presentation/bloc/profile_bloc.dart';
 
+import 'feature/saved/presentation/bloc/saved_bloc.dart';
+
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -24,6 +24,7 @@ class App extends StatelessWidget {
             BlocProvider(create: (_) => ProfileBloc()),
             BlocProvider(create: (_) => AddNewContractBloc()),
             BlocProvider(create: (_) => HistoryBloc()),
+            BlocProvider(create: (_) => SavedBloc()),
           ],
           child: const App(),
         ),
@@ -32,7 +33,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(
-      supportedLocales: const [  Locale('uz'),   Locale('en'),  Locale('ru')],
+      supportedLocales: const [Locale('uz'), Locale('en'), Locale('ru')],
       fallbackLocale: const Locale('en'),
       path: 'assets/translations',
       child: ScreenUtilInit(

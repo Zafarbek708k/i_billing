@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_billing/core/extension/context_extension.dart';
 
 class CustomCalendarWidget extends StatefulWidget {
-  const CustomCalendarWidget({super.key});
+  const CustomCalendarWidget({super.key, required this.pressData});
+  final VoidCallback pressData;
 
   @override
   CustomCalendarWidgetState createState() => CustomCalendarWidgetState();
@@ -41,7 +42,6 @@ class CustomCalendarWidgetState extends State<CustomCalendarWidget> {
   @override
   Widget build(BuildContext context) {
     final monthDays = CalendarUtils.getMonthDays(currentYear, currentMonth);
-
     return DecoratedBox(
       decoration: const BoxDecoration(color: Color(0xff1E1E20)),
       child: Column(
@@ -74,9 +74,7 @@ class CustomCalendarWidgetState extends State<CustomCalendarWidget> {
               itemBuilder: (context, index) {
                 final day = monthDays[index];
                 return GestureDetector(
-                  onTap: () {
-                    log('Selected date: ${day['date']}');
-                  },
+                  onTap: widget.pressData,
                   child: Container(
                     width: 60,
                     margin: const EdgeInsets.symmetric(horizontal: 4),

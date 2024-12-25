@@ -7,17 +7,111 @@ import 'package:i_billing/feature/contracts/data/model/full_contract_model.dart'
 import 'package:i_billing/feature/contracts/data/repository_implementation/contract_repository_implementation.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../../core/service/api_const.dart';
+import '../../../../../core/service/network_service.dart';
+
 part 'contract_event.dart';
 part 'contract_state.dart';
 
 class ContractBloc extends Bloc<ContractEvent, ContractState> {
   ContractBloc() : super(ContractState.initial()) {
     on<ContractEvent>((event, emit) {});
-    on<GetAllContractEvent>((event, emit) {});
+    on<GetAllContractEvent>((event, emit) => getAllContract(event, emit));
     on<FilterEvent>((event, emit) => filterEvent(event, emit));
     on<BeginDateSelectEvent>((event, emit) => beginDateSelect(event, emit));
     on<EndDateSelectEvent>((event, emit) => endDateSelect(event, emit));
+    on<AuthorContractsEvent>((event, emit) => authorContracts(event, emit));
+    on<SaveContractEvent>((event, emit) => saveContract(event, emit));
+    on<DeleteContractEvent>((event, emit) => deleteContract(event, emit));
     initial();
+  }
+
+  Future<void> deleteContract(DeleteContractEvent event, Emitter<ContractState> emit) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    String? onePerson = await NetworkService.get("${ApiConst.apiBilling}/1", ApiConst.emptyParam());
+    if (onePerson != null) {
+      final person = personFromJson(onePerson);
+      if (person.fullName == event.authorName) {
+        // delete from saved api
+        for (var value in person.contracts!) {
+          if (value.contractId == event.contractId && value.saved!) {
+            log("delete api ${ApiConst.apiSavedData}/${value.contractId}");
+            String? deleteSavedContract = await NetworkService.delete(
+              "${ApiConst.apiSavedData}/${value.contractId}",
+              ApiConst.emptyParam(),
+            );
+            if(deleteSavedContract != null){
+              log("Apidan ham o'chdi");
+            }
+          }
+        }
+        // delete from list after that update to Mock api
+        person.contracts!.removeWhere((value) {
+          return value.contractId == event.contractId;
+        });
+        String? updateNetworkData = await NetworkService.put(ApiConst.apiBilling, "1", person.toJson());
+        if(updateNetworkData != null){
+          emit(state.copyWith(status: HomeStatus.loaded, authorContracts: person.contracts));
+        }else{
+          emit(state.copyWith(status: HomeStatus.error, errorMsg: "Something went wrong at Update data"));
+        }
+      } else {
+        emit(state.copyWith(status: HomeStatus.error, errorMsg: "Another user data", contractList: state.contractList));
+      }
+    } else {
+      emit(state.copyWith(status: HomeStatus.error, errorMsg: "Something went wrong at Delete data"));
+    }
+  }
+
+  Future<void> saveContract(SaveContractEvent event, Emitter<ContractState> emit) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    String? onePersonData = await NetworkService.get("${ApiConst.apiBilling}/1", ApiConst.emptyParam());
+    if (onePersonData != null) {
+      final onePerson = personFromJson(onePersonData);
+      if (onePerson.fullName == event.authorName) {
+        Contract oldCon = onePerson.contracts!.firstWhere(
+          (value) => event.contractId == value.contractId,
+          orElse: () => throw Exception('Contract not found'),
+        );
+        log("bloc => ${onePerson.fullName} == ${event.authorName} \n old contract save? => ${oldCon.saved}");
+        final index = onePerson.contracts!.indexWhere((item) => item.contractId == event.contractId);
+        final updatedContract = Contract(
+          author: oldCon.author,
+          status: oldCon.status,
+          contractId: oldCon.contractId,
+          amount: oldCon.amount,
+          lastInvoice: oldCon.lastInvoice,
+          numberOfInvoice: oldCon.numberOfInvoice,
+          addresOrganization: oldCon.addresOrganization,
+          innOrganization: oldCon.innOrganization,
+          dateTime: oldCon.dateTime,
+          saved: true,
+        );
+        onePerson.contracts![index] = updatedContract;
+        String? update = await NetworkService.put(ApiConst.apiBilling, "1", onePerson.toJson());
+        String? result = await NetworkService.post(ApiConst.apiSavedData, updatedContract.toJson());
+        if (result != null && update != null) {
+          log("post boldi updated contract save value => ${onePerson.contracts![index].saved}");
+          emit(state.copyWith(status: HomeStatus.loaded, authorContracts: onePerson.contracts));
+        } else {
+          log("post bolmadi");
+          emit(state.copyWith(status: HomeStatus.error, errorMsg: "Failed to save data"));
+        }
+      } else {
+        emit(state.copyWith(status: HomeStatus.error, errorMsg: "This user is not you"));
+      }
+    } else {
+      emit(state.copyWith(status: HomeStatus.error, errorMsg: "Something went wrong at save data"));
+    }
+  }
+
+  Future<void> authorContracts(AuthorContractsEvent event, Emitter<ContractState> emit) async {
+    List<Contract> authorContracts = [];
+    final contracts = state.contractList;
+    String authorName = event.authorName;
+    emit(state.copyWith(status: HomeStatus.loading));
+    authorContracts = contracts!.where((contract) => contract.author != null && contract.author!.toLowerCase() == authorName.toLowerCase()).toList();
+    emit(state.copyWith(status: HomeStatus.loaded, authorContracts: authorContracts));
   }
 
   Future<void> filterEvent(FilterEvent event, Emitter<ContractState> emit) async {
@@ -56,7 +150,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
       // Filter based on date range
       bool dateFilter = itemDateTime != null && itemDateTime.isAfter(startTime) && itemDateTime.isBefore(endTime);
 
-      return statusFilter || dateFilter;
+      return statusFilter && dateFilter;
     }).toList();
 
     // Emit the new state with the filtered list

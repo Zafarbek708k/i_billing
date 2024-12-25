@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:i_billing/core/service/api_const.dart';
 import 'package:i_billing/core/service/network_service.dart';
 import 'package:i_billing/core/service/utils_service.dart';
+import 'package:i_billing/feature/contracts/presentation/pages/contract_screen.dart';
 import 'package:i_billing/feature/new/data/models/one_user_model.dart';
 
 part 'add_new_contract_event.dart';
@@ -48,11 +50,14 @@ class AddNewContractBloc extends Bloc<AddNewContractEvent, AddNewContractState> 
         amount: "456",
         addresOrganization: event.address,
         author: oneUserModel.fullName,
+        saved: false,
+        contractId: "${5 + Random().nextInt(96)}",
       );
       oneUserModel.contracts!.add(contract);
       String? putNewUserData = await NetworkService.put(ApiConst.apiBilling, oneUserModel.id!, oneUserModel.toJson());
       if (putNewUserData != null) {
         Utils.fireSnackBar("Successfully created new contract", event.context);
+        one = true;
         emit(state.copyWith(status: NewContractStatus.loaded));
         event.clear();
       } else {

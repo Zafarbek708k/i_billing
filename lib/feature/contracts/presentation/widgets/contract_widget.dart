@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:i_billing/core/extension/context_extension.dart';
 import 'package:i_billing/feature/contracts/data/model/full_contract_model.dart';
 import '../../../../core/common/app_colors.dart';
 
@@ -68,15 +69,15 @@ class ContractWidget extends StatelessWidget {
                         ),
                         Text(
                           model.numberOfInvoice!,
-                          style: const TextStyle(color: Color(0xffE7E7E7), fontSize: 19),
+                          style: context.textTheme.bodyMedium?.copyWith( color: const Color(0xffE7E7E7), fontSize: 19),
                         )
                       ],
                     ),
                     DecoratedBox(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: paymentTypeColor.withOpacity(0.3)),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                        child: Text(paymentTypeText, style: TextStyle(color: paymentTypeColor)),
+                        padding: const EdgeInsets.only(left: 18.0, right: 18, bottom: 3),
+                        child: Text(paymentTypeText, style: context.textTheme.bodyMedium?.copyWith(color: paymentTypeColor)),
                       ),
                     ),
                   ],

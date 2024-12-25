@@ -30,7 +30,7 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         backgroundColor: AppColors.darker,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.close))],
+        actions: [IconButton(onPressed: () => setState(() => srchCtrl.clear()), icon: const Icon(Icons.close))],
         title: TextField(
           controller: srchCtrl,
           style: const TextStyle(color: Colors.white),
@@ -57,6 +57,7 @@ class _SearchState extends State<Search> {
                     return ContractWidget(
                       model: state.filterList![index],
                       onTap: () {
+                        context.read<ContractBloc>().add(AuthorContractsEvent(authorName: state.filterList![index].author ?? "Ali Valiyev"));
                         Navigator.push(
                           context,
                           MaterialPageRoute(

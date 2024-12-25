@@ -1,13 +1,11 @@
-
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:i_billing/core/extension/context_extension.dart';
 import 'package:i_billing/feature/contracts/presentation/pages/contract_detail.dart';
-import 'package:i_billing/feature/contracts/presentation/widgets/calendar.dart';
 import 'package:i_billing/feature/contracts/presentation/widgets/contract_widget.dart';
 
 import '../../data/model/full_contract_model.dart';
+import '../bloc/contract_bloc/contract_bloc.dart';
 
 class PaginationExample extends StatefulWidget {
   final List<Contract> contractList;
@@ -49,7 +47,7 @@ class PaginationExampleState extends State<PaginationExample> {
     if (startIndex < items.length) {
       setState(() => isLoading = true);
 
-      Future.delayed(const Duration(milliseconds: 1500), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
           displayedItems.addAll(
             items.sublist(startIndex, endIndex > items.length ? items.length : endIndex),
@@ -70,49 +68,44 @@ class PaginationExampleState extends State<PaginationExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const CustomCalendarWidget(),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: displayedItems.isEmpty && !isLoading
-                ? const Center(
-              child: Text(
-                "No items available",
-                style: TextStyle(color: Colors.grey),
-              ),
-            )
-                : ListView.builder(
-              controller: _scrollController,
-              itemCount: displayedItems.length + (isLoading ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index < displayedItems.length) {
-                  log("\n\n to json${displayedItems[0].toJson()}\n\n");
-                  return ContractWidget(
-                    model: displayedItems[index],
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ContractDetail(model: displayedItems[index]),
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+        child: displayedItems.isEmpty && !isLoading
+            ? const Center(
+                child: Text(
+                  "No items available",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              )
+            : RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ContractBloc>().add(GetAllContractEvent());
+                },
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: displayedItems.length + (isLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index < displayedItems.length) {
+                      return ContractWidget(
+                        model: displayedItems[index],
+                        onTap: () {
+                          context.read<ContractBloc>().add(AuthorContractsEvent(authorName: displayedItems[index].author ?? "Ali Valiyev"));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ContractDetail(model: displayedItems[index])));
+                        },
+                      );
+                    } else {
+                      return  Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text("Load more item...", style: context.textTheme.bodyMedium?.copyWith(color: Colors.green)),
                         ),
                       );
-                    },
-                  );
-                } else {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        ),
-      ],
+                    }
+                  },
+                ),
+              ),
+      ),
     );
   }
 }

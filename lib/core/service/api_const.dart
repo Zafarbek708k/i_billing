@@ -2,8 +2,9 @@ final class ApiConst {
   static const Duration connectionTimeout = Duration(minutes: 1);
   static const Duration sendTimeout = Duration(minutes: 1);
   static const Duration receiveTimeout = Duration(minutes: 1);
-  static const String baseUrl = "https://65c717aae7c384aada6e2dae.mockapi.io";
-  static const String apiBilling = "/billing";
+  static const String baseUrl = "https://65ca48bb3b05d29307e0172d.mockapi.io";
+  static const String apiBilling = "/product/contracts";
+  static const String apiSavedData = "/product/savedContracts";
 
 
 
